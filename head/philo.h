@@ -6,7 +6,7 @@
 /*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:30:14 by mmensing          #+#    #+#             */
-/*   Updated: 2022/12/12 08:40:07 by mmensing         ###   ########.fr       */
+/*   Updated: 2022/12/12 18:26:02 by mmensing         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_data
 
 typedef struct s_philo
 {
+	int32_t	test_val;
 	pthread_t		thread;
 	pthread_mutex_t	th_lock;
 	
