@@ -6,7 +6,7 @@
 /*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:30:14 by mmensing          #+#    #+#             */
-/*   Updated: 2022/12/12 18:26:02 by mmensing         ###   ########.fr       */
+/*   Updated: 2022/12/12 19:54:45 by mmensing         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,12 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+
+// for threads
 # include <pthread.h>
+
+// for get time 
+#include <sys/time.h>
 
 // libft
 # include "../include/libft/libft.h"
