@@ -6,7 +6,7 @@
 /*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:30:14 by mmensing          #+#    #+#             */
-/*   Updated: 2022/12/03 23:11:44 by mmensing         ###   ########.fr       */
+/*   Updated: 2022/12/12 08:40:07 by mmensing         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,33 @@
 // libft
 # include "../include/libft/libft.h"
 
+typedef struct s_data
+{
+	char			**av;
+	int32_t		nums_of_philos;
+	
+}				t_data;
+
 typedef struct s_philo
 {
 	pthread_t		thread;
-	pthread_mutex_t	mutex;
-	char			**av;
-	int32_t			*philos;
+	pthread_mutex_t	th_lock;
+	
 }				t_philo;
 
+
 // testing
-void *something();
+// void *something();
 void error_msg(char *msg);
+
+
+//		main
+// void destroy_threads(t_philo *philos);
 
 
 //		../files/check_input.c
 void check_for_valid_arg(char *av);
-void check_and_set_input(t_philo *data, int32_t ac, char **av_);
-
+void check_and_set_input(t_data *data, int32_t ac, char **av_);
 
 
 # endif

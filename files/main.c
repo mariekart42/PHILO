@@ -6,14 +6,14 @@
 /*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:45:46 by mmensing          #+#    #+#             */
-/*   Updated: 2022/12/03 23:12:31 by mmensing         ###   ########.fr       */
+/*   Updated: 2022/12/12 14:49:04 by mmensing         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../head/philo.h"
 
 // delete later, just for testing
-int32_t brr = 0;
+// int32_t brr = 0;
 // pthread_mutex_t	mutex;
 
 void	error_msg(char *msg)
@@ -26,54 +26,96 @@ void	error_msg(char *msg)
 void *ad_one(void *data)
 {
 	printf("i'm a thread lol\n");
+	printf("data: %p\n", data);
+	
 	// protect programm for race condition
 	// pthread_mutex_lock(&data->mutex);
-	brr++;
+	// brr++;
 	// pthread_mutex_unlock(&data->mutex);
-	return(NULL);
+	return (NULL);
 }
 
-void create_threads(t_philo *data, int32_t nums_of_philos)
+void create_threads(t_philo *philos, t_data *data)
 {
 	int32_t i = 0;
 
 	// init mutex
-	pthread_mutex_init(&data->mutex, NULL);
-printf("nums of philoes: %d\n", nums_of_philos);
-	while (i < nums_of_philos)
+	pthread_mutex_init(&philos->th_lock, NULL);
+	
+	printf("nums of philos: %d\n", data->nums_of_philos);
+
+	while (i < data->nums_of_philos)
 	{
-printf("check\n");
+		// printf("check\n");
+		
 		// creating thread
-		// need adress here so not threads[i] but threads+i!!
-		if (pthread_create(&data->thread, NULL, &ad_one, NULL))
+		if (pthread_create(&philos[i].thread, NULL, &ad_one, NULL))
 			error_msg("threading faild");
-		data->philos[i] = (int32_t)data->thread;
+			
 		i++;
 		printf("thread %d got created\n", i);
 	}
 	
 	i = 0;
+	
 	// two different while loops cause otherwise thread gets created and when we wait for it right after it
 	// processes run successively and not at the same time
-	while (i < nums_of_philos)
+	while (i < data->nums_of_philos)
 	{
 		// waiting for thread
-		// here we just need the value of thread so can use threads[i]
-		data->thread = data->philos[i];
-		if (pthread_join(&data->thread, NULL))
+		// here we just need the value of thread so can use philos[i]
+		if (pthread_join(philos[i].thread, NULL))
 			error_msg("waiting for thread failed");
+			
 		i++;
 		printf("waited for thread %d\n", i);
 	}
 	
+	// printf("reached point after waiting loop\n");
+	
 	// // after execution always destroy mutex
-	// pthread_mutex_destroy(&mutex);
+	// pthread_mutex_destroy(&philos->th_lock);
+	// printf("reached point after destroy mutex\n");
+}
+
+void destroy_threads(t_philo *philos, t_data *data)
+{
+	int	i;
+
+	i = 0;
+
+	while (i < data->nums_of_philos)
+	{
+		pthread_mutex_lock(&philos[i].th_lock);
+		pthread_mutex_unlock(&philos[i].th_lock);
+		pthread_join(philos[i].thread, NULL);
+		i++;
+	}
+	i = 0;
+	while (i < data->nums_of_philos)
+	{
+		// pthread_mutex_destroy(&philos[i].th_lock);
+		i++;
+		printf("destroyed mutex %d\n", i);
+	// 	// free(philos[i].name);
+	}
+		printf("still alright\n");
+	// free(philos);
 }
 
 int main(int32_t ac, char *av[])
 {
-	t_philo	data;
+	t_philo	philos;
+	t_data	data;
 	
 	check_and_set_input(&data, ac, av);
-	create_threads(&data, ft_atoi(av[1]));
+	// exit(0);
+	create_threads(&philos, &data);
+	
+	destroy_threads(&philos, &data);
+	pthread_mutex_destroy(&philos.th_lock);
+
+	// error happens while destroy mutex -> read into it
+
+
 }
