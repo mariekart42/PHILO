@@ -6,7 +6,7 @@
 /*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:30:14 by mmensing          #+#    #+#             */
-/*   Updated: 2022/12/12 19:54:45 by mmensing         ###   ########.fr       */
+/*   Updated: 2022/12/13 05:12:48 by mmensing         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,9 @@ void error_msg(char *msg);
 void check_for_valid_arg(char *av);
 void check_and_set_input(t_data *data, int32_t ac, char **av_);
 
+//		../files/edit_threads.c
+void *test_routine(void *philos_);
+void join_threads(t_philo *philos, t_data *data);
+void create_threads(t_philo *philos, t_data *data);
 
 # endif
