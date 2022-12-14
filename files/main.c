@@ -6,7 +6,7 @@
 /*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:45:46 by mmensing          #+#    #+#             */
-/*   Updated: 2022/12/14 00:51:49 by mmensing         ###   ########.fr       */
+/*   Updated: 2022/12/14 04:30:43 by mmensing         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int main(int32_t ac, char *av[])
 	// set av and all arguments to struct varibles
 	// set all forsk to true
 	check_and_set_input(&data, ac, av);
+	
 	
 	// init mutex -> called th_lock
 	pthread_mutex_init(&philos.th_lock, NULL);

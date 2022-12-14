@@ -6,40 +6,22 @@
 /*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 05:08:58 by mmensing          #+#    #+#             */
-/*   Updated: 2022/12/14 01:28:51 by mmensing         ###   ########.fr       */
+/*   Updated: 2022/12/14 04:31:56 by mmensing         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../head/philo.h"
 
-// return val needs always to be a void pointer 
-void *test_routine(void *philos_)
-{
-	t_philo *philos;
-	
-	philos = (t_philo *)philos_;
-	// printf("i'm a thread lol\n");
-	// printf("data: %p\n", data);
-	pthread_mutex_lock(&philos->th_lock);
-	philos->test_val++;
-	printf("data.test_val: %d\n", philos->test_val);
-	pthread_mutex_unlock(&philos->th_lock);
-
-	// protect programm for race condition
-	// pthread_mutex_lock(&data->mutex);
-	// brr++;
-	// pthread_mutex_unlock(&data->mutex);
-	return (NULL);
-}
-
-void check_if_dead()
-{
-	// how lol
-}
+// void check_if_dead()
+// {
+// 	// how lol
+// }
 
 void init_forks(t_data *data)
 {
-
+	pthread_mutex_lock(data->philo_access.forks);
+	
+	pthread_mutex_unlock(data->philo_access.forks);
 }
 
 
