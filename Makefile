@@ -1,7 +1,7 @@
 NAME= philo.a
 
 CC = gcc
-CFLAGS= -Wall -Werror -Wextra -pthread -g
+CFLAGS= -Wall -Werror -Wextra -pthread -g -fsanitize=thread
 HEADER= philo.h
 RM= rm -rf
 NAME = philo
@@ -10,8 +10,9 @@ NAME = philo
 LIBFT= include/libft/libft.a
 
 FILES=	files/main.c \
-		files/check_input.c \
-		files/edit_threads.c
+		files/handle_input.c \
+		files/edit_threads.c \
+		files/philo_shit.c
 
 # testing/threading.c
 O_FILES= $(FILES:%.c=%.o)
