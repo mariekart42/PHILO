@@ -6,7 +6,7 @@
 /*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:30:14 by mmensing          #+#    #+#             */
-/*   Updated: 2022/12/14 00:58:11 by mmensing         ###   ########.fr       */
+/*   Updated: 2022/12/15 00:50:47 by mmensing         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,38 @@
 # include "../include/libft/libft.h"
 
 
+//colour shit
+# define RED   "\x1B[31m"
+# define GRN   "\x1B[32m"
+# define YEL   "\x1B[33m"
+# define BLU   "\x1B[34m"
+# define MAG   "\x1B[35m"
+# define CYN   "\x1B[36m"
+# define WHT   "\x1B[37m"
+# define RESET "\x1B[0m"
+
+
+
 typedef struct s_philo
 {
 	int32_t	test_val;
 	
 	pthread_t		thread;
 	pthread_mutex_t	th_lock;
-	bool			*forks;
-	int32_t			*philos;
+	
+	int32_t		id;
+	int32_t		dead;
+	int32_t		eat;
+	int32_t		sleep;
+	int32_t		meal_count;
+	int64_t		starting_time;
+	int32_t		last_ate;
+	
+	pthread_mutex_t		*right_fork;
+	pthread_mutex_t		*left_fork;
+
+
+	t_data	*philo_data;
 	
 }				t_philo;
 
@@ -46,8 +70,13 @@ typedef struct s_data
 	int32_t		time_to_die;
 	int32_t		time_to_eat;
 	int32_t		time_to_sleep;
+	bool		somebody_died;
 	t_philo		philo_access;
-	int32_t		id;
+	
+	pthread_mutex_t			*forks;
+	pthread_mutex_t		msg;
+	pthread_mutex_t		dead;
+	
 	
 }				t_data;
 
@@ -60,7 +89,8 @@ void error_msg(char *msg);
 // void destroy_threads(t_philo *philos);
 
 
-//		../files/check_input.c
+//		../files/handle_input.c
+int64_t get_time();
 bool check_for_valid_arg(char *av);
 void check_and_set_input(t_data *data, int32_t ac, char **av_);
 

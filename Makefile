@@ -1,7 +1,8 @@
 NAME= philo.a
 
 CC = gcc
-CFLAGS= -Wall -Werror -Wextra -pthread -g -fsanitize=thread
+CFLAGS= -Wall -Werror -Wextra -pthread -g
+# -fsanitize=thread
 HEADER= philo.h
 RM= rm -rf
 NAME = philo

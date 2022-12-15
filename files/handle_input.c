@@ -6,11 +6,23 @@
 /*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 23:10:21 by mmensing          #+#    #+#             */
-/*   Updated: 2022/12/13 13:34:44 by mmensing         ###   ########.fr       */
+/*   Updated: 2022/12/14 17:41:06 by mmensing         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../head/philo.h"
+
+int64_t get_time()
+{
+	struct timeval s_time;
+	
+	if (gettimeofday(&s_time, NULL) < 0)
+		error_msg("Error! Failed to get timeofday!");
+
+// *1000 to get from micro to millisecond
+// /1000 to get from 
+	return ((s_time.tv_usec / 1000) + (s_time.tv_sec * 1000));
+}
 
 bool check_for_valid_arg(char *av)
 {
@@ -41,10 +53,20 @@ void check_and_set_input(t_data *data, int32_t ac, char **av_)
 		i++;
 	}
 	data->num_of_philos = ft_atoi(av_[1]);
+	if (data->num_of_philos < 2)
+		error_msg("Invalid input! Minimum 2 philosophers!");
 	data->time_to_die = ft_atoi(av_[2]);
 	data->time_to_eat = ft_atoi(av_[3]);
 	data->time_to_sleep = ft_atoi(av_[4]);
-	data->av = av_;
+	if (data->time_to_eat + data->time_to_sleep > data->time_to_die)
+		error_msg("Invalid input! The time to eat and sleep must not exceed the time to die!");
+	data->meal_count = 0;
+	// if (ac == 6)
+	// 	data->meal_count = ft_atoi(argv[5]);
+	
+	data->somebody_died = false;
+
+	data->av = av_;	// do i even need av again?
 	
 	// set all forks to true
 	while (i < data->num_of_philos)
