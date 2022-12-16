@@ -6,7 +6,7 @@
 /*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 23:10:21 by mmensing          #+#    #+#             */
-/*   Updated: 2022/12/16 12:04:57 by mmensing         ###   ########.fr       */
+/*   Updated: 2022/12/16 15:44:52 by mmensing         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,9 @@ int32_t check_for_valid_arg(char *av)
 	// check later also if arguments make sense etc (if that makes sense lol)
 }
 
-void check_and_set_input(t_data *data, int32_t ac, char **av_)
+void check_and_set_input(t_philo **s_philo, t_data *s_data, int32_t ac, char **av_)
 {
 	int32_t i;
-	
 	i = 1;
 	if (ac != 5 && ac != 6)
 		error_msg("Wrong input! usage: ./philo <param> <param> <param> <param>");
@@ -66,20 +65,31 @@ void check_and_set_input(t_data *data, int32_t ac, char **av_)
 			error_msg("Arguments contain non digit Characters!\n");
 		i++;
 	}
-	data->num_of_philos = ft_atoi(av_[1]);
-	if (data->num_of_philos < 2)
+	s_data->num_of_philos = ft_atoi(av_[1]);
+	if (s_data->num_of_philos < 2)
 		error_msg("Invalid input! Minimum 2 philosophers!");
-	data->time_to_die = ft_atoi(av_[2]);
-	data->time_to_eat = ft_atoi(av_[3]);
-	data->time_to_sleep = ft_atoi(av_[4]);
-	if (data->time_to_eat + data->time_to_sleep > data->time_to_die)
-		error_msg("Invalid input! The time to eat and sleep must not exceed the time to die!");
-	data->meal_count = 0;
-	if (ac == 6)
-		data->meal_count = ft_atoi(argv[5]);
+	printf("num philos data: %d\n", s_data->num_of_philos);
+	int32_t bitch;
+	bitch = s_data->num_of_philos;
+	printf("bitch: %d\n", bitch);
 	
-	data->somebody_died = false;
+	*s_philo->num_of_philos = bitch;
+	printf("num philos philo: %d\n", s_philo->num_of_philos);
+	
 
-	data->av = av_;	// do i even need av again?
+
+	printf(GRN"check and set input\n"RESET);
+	s_data->time_to_die = ft_atoi(av_[2]);
+	s_data->time_to_eat = ft_atoi(av_[3]);
+	s_data->time_to_sleep = ft_atoi(av_[4]);
+	if (s_data->time_to_eat + s_data->time_to_sleep > s_data->time_to_die)
+		error_msg("Invalid input! The time to eat and sleep must not exceed the time to die!");
+	s_philo->meal_count = 0;
+	if (ac == 6)
+		s_philo->meal_count = ft_atoi(av_[5]);
+	
+	s_data->somebody_died = false;
+
+	s_data->av = av_;	// do i even need av again?
 
 }

@@ -6,7 +6,7 @@
 /*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:30:14 by mmensing          #+#    #+#             */
-/*   Updated: 2022/12/16 12:04:08 by mmensing         ###   ########.fr       */
+/*   Updated: 2022/12/16 15:44:46 by mmensing         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ typedef struct s_data
 	int32_t		time_to_sleep;
 	bool		somebody_died;
 	// t_philo		philo_access;
-	int64_t		program_start_time;
-	int32_t		meal_count;
 	
 	pthread_mutex_t		*m_forks;
 	pthread_mutex_t		m_msg;
@@ -63,14 +61,20 @@ typedef struct s_data
 
 typedef struct s_philo
 {	
+	int32_t test;
+
+
+	int32_t		meal_count;
 	pthread_t		thread;
 	// pthread_mutex_t	th_lock;
+	int32_t		num_of_philos;
 	
 	// index of philosopher
 	int32_t		id;
 	
 	// status if philo died
 	bool		somebody_died;
+	int64_t		program_start_time;
 	
 	// time to eat, die and sleep
 	int32_t		tt_eat;
@@ -100,12 +104,12 @@ void error_msg(char *msg);
 //		../files/handle_input.c
 int64_t get_time();
 int32_t check_for_valid_arg(char *av);
-void check_and_set_input(t_data *data, int32_t ac, char **av_);
+void check_and_set_input(t_philo **s_philo, t_data *s_data, int32_t ac, char **av_);
 
 //		../files/edit_threads.c
 void *test_routine(void *philos_);
-void join_threads(t_philo *philos, t_data *data);
-void create_threads(t_philo *philos, t_data *data);
+void join_threads(t_philo *s_philos, t_data *s_data);
+void create_threads(t_philo *s_philos, t_data *s_data);
 
 //		../files/philo_shit.c
 
