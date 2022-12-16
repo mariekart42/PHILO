@@ -6,7 +6,7 @@
 /*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:30:14 by mmensing          #+#    #+#             */
-/*   Updated: 2022/12/15 00:50:47 by mmensing         ###   ########.fr       */
+/*   Updated: 2022/12/16 12:04:08 by mmensing         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,29 +39,8 @@
 # define RESET "\x1B[0m"
 
 
+#define RETURN
 
-typedef struct s_philo
-{
-	int32_t	test_val;
-	
-	pthread_t		thread;
-	pthread_mutex_t	th_lock;
-	
-	int32_t		id;
-	int32_t		dead;
-	int32_t		eat;
-	int32_t		sleep;
-	int32_t		meal_count;
-	int64_t		starting_time;
-	int32_t		last_ate;
-	
-	pthread_mutex_t		*right_fork;
-	pthread_mutex_t		*left_fork;
-
-
-	t_data	*philo_data;
-	
-}				t_philo;
 
 typedef struct s_data
 {
@@ -71,14 +50,43 @@ typedef struct s_data
 	int32_t		time_to_eat;
 	int32_t		time_to_sleep;
 	bool		somebody_died;
-	t_philo		philo_access;
+	// t_philo		philo_access;
+	int64_t		program_start_time;
+	int32_t		meal_count;
 	
-	pthread_mutex_t			*forks;
-	pthread_mutex_t		msg;
-	pthread_mutex_t		dead;
+	pthread_mutex_t		*m_forks;
+	pthread_mutex_t		m_msg;
+	pthread_mutex_t		m_somebody_died;
 	
 	
 }				t_data;
+
+typedef struct s_philo
+{	
+	pthread_t		thread;
+	// pthread_mutex_t	th_lock;
+	
+	// index of philosopher
+	int32_t		id;
+	
+	// status if philo died
+	bool		somebody_died;
+	
+	// time to eat, die and sleep
+	int32_t		tt_eat;
+	int32_t		tt_die;
+	int32_t		tt_sleep;
+	
+	int32_t		last_ate;
+	
+	
+	pthread_mutex_t		*right_fork;
+	pthread_mutex_t		*left_fork;
+
+
+	t_data	*philo_data;
+	
+}				t_philo;
 
 // testing
 // void *something();
@@ -91,7 +99,7 @@ void error_msg(char *msg);
 
 //		../files/handle_input.c
 int64_t get_time();
-bool check_for_valid_arg(char *av);
+int32_t check_for_valid_arg(char *av);
 void check_and_set_input(t_data *data, int32_t ac, char **av_);
 
 //		../files/edit_threads.c

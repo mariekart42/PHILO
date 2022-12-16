@@ -6,7 +6,7 @@
 /*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 23:10:21 by mmensing          #+#    #+#             */
-/*   Updated: 2022/12/14 17:41:06 by mmensing         ###   ########.fr       */
+/*   Updated: 2022/12/16 12:04:57 by mmensing         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,31 @@ int64_t get_time()
 	return ((s_time.tv_usec / 1000) + (s_time.tv_sec * 1000));
 }
 
-bool check_for_valid_arg(char *av)
+
+/* function checks if c is any kind of whitespace
+ * returns 0 if c is whitespace
+ * returns 1 if c is something but whitespace	*/
+int32_t whitespace(char c)
 {
-	int32_t i = 1;
+	if ((c >= 1 && c <= 31) || c == 127)
+		return (0);
+	return (1);
+}
+
+/* function checks for valid input (only digits or whitespaces)
+ * returns 1 for invalid input
+ * returns 0 for valid input								*/
+int32_t check_for_valid_arg(char *av)
+{
+	int32_t i = 0;
 
 	while (av[i] != '\0')
 	{
-		if (ft_isdigit(av[i]) && av[i] != ' ')
-			return (false);
+		if (!ft_isdigit(av[i]) && whitespace(av[i]))
+			return (1);
 		i++;
 	}
-	return (true);
+	return (0);
 	// check later also if arguments make sense etc (if that makes sense lol)
 }
 
@@ -42,13 +56,13 @@ void check_and_set_input(t_data *data, int32_t ac, char **av_)
 {
 	int32_t i;
 	
-	i = 0;
+	i = 1;
 	if (ac != 5 && ac != 6)
 		error_msg("Wrong input! usage: ./philo <param> <param> <param> <param>");
 	
 	while (i < ac)
 	{
-		if (check_for_valid_arg(av_[i]) == false)
+		if (check_for_valid_arg(av_[i]))
 			error_msg("Arguments contain non digit Characters!\n");
 		i++;
 	}
@@ -61,17 +75,11 @@ void check_and_set_input(t_data *data, int32_t ac, char **av_)
 	if (data->time_to_eat + data->time_to_sleep > data->time_to_die)
 		error_msg("Invalid input! The time to eat and sleep must not exceed the time to die!");
 	data->meal_count = 0;
-	// if (ac == 6)
-	// 	data->meal_count = ft_atoi(argv[5]);
+	if (ac == 6)
+		data->meal_count = ft_atoi(argv[5]);
 	
 	data->somebody_died = false;
 
 	data->av = av_;	// do i even need av again?
-	
-	// set all forks to true
-	while (i < data->num_of_philos)
-	{
-		data->philo_access.forks[i] = true;
-		i++;
-	}
+
 }

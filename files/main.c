@@ -6,7 +6,7 @@
 /*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:45:46 by mmensing          #+#    #+#             */
-/*   Updated: 2022/12/15 00:09:48 by mmensing         ###   ########.fr       */
+/*   Updated: 2022/12/15 15:54:59 by mmensing         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,15 @@ void init_threads(t_philo *philos, t_data *data)
 
 		philos[i].id = i + 1;
 		printf(YEL"current id: %d\n"RESET, philos[i].id);
-		philos[i].dead = data->time_to_die;
-		philos[i].eat = data->time_to_eat;
-		philos[i].sleep = data->time_to_sleep;
+		
+		philos[i].tt_die = data->time_to_die;
+		philos[i].tt_eat = data->time_to_eat;
+		philos[i].tt_sleep = data->time_to_sleep;
+		
 		philos[i].meal_count = 0;
 		
-		// philo[i].last_time_ate = info->start;
+		
+		// philos[i].last_ate = data->program_start_time;
 		// philo[i].right_fork = &info->forks[i];
 		// philo[i].left_fork = &info->forks[(i + 1) % info->number_of_philo];
 		// philo[i].philo_info = info;
@@ -58,24 +61,24 @@ int32_t init_mutexes(t_data *data)
 	
 	// for every philosopher we need one fork
 	// a fork is protected with one mutex, fo we need 'amount of philos' fork-mutexes
-	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_of_philos);
-	if (data->forks == NULL)
+	data->m_forks = malloc(sizeof(pthread_mutex_t) * data->num_of_philos);
+	if (data->m_forks == NULL)
 		error_msg("Error! Failed to malloc for forks!");
 		
 	while (i < data->num_of_philos)
 	{
 		// creating a mutex for each fork
-		if (pthread_mutex_init(&data->forks[i], NULL))
+		if (pthread_mutex_init(&data->m_forks[i], NULL))
 			error_msg("Error! Failed to create mutex for fork!");
 		i++;
 	}
 	
 	// create here mutex also for displaying messages
-	if (init_mutex_init(&data->msg, NULL))
+	if (pthread_mutex_init(&data->m_msg, NULL))
 		error_msg("Error! Failed to create mutex for 'msg'!");
 		
 	// create here mutex for status if somebody died
-	if (init_mutex_init(&data->somebody_died, NULL))
+	if (pthread_mutex_init(&data->m_somebody_died, NULL))
 		error_msg("Error! Failed to create mutex for 'somebody_died'!");
 	
 	return (0);
@@ -83,23 +86,44 @@ int32_t init_mutexes(t_data *data)
 
 void destroy_mutexes(t_data *data)
 {
+	int32_t i = 0;
+	
+	// destroy mutexes for all forks
+	while (i < data->num_of_philos)
+	{
+		if (pthread_mutex_destroy(&data->m_forks[i]))
+			error_msg("Error! Failed to destroy mutex for fork!");
+		i++;
+	}
+	
+	// destroy mutex for printing messages
+	if (pthread_mutex_destroy(&data->m_msg))
+		error_msg("Error! Failed to destroy mutex for messages!");
+	
+	if (pthread_mutex_destroy(&data->m_somebody_died))
+		error_msg("Error! Failed to destroy mutex for death_status");
 	return ;
 }
 
 int main(int32_t ac, char *av[])
 {
+	// testing gettime
+	int64_t time;
+	time  = get_time();
+	printf(YEL"get_time: %lld\n"RESET, time);
+
+
 	t_philo	*philos = NULL;
 	t_data	data;
 	
 	
-	// printf(GRN"debug check\n"RESET);
+	printf(GRN"debug check\n"RESET);
 	
 	// check for amount and if only digits
 	// set av and all arguments to struct varibles
 	// set all forsk to true
 	check_and_set_input(&data, ac, av);
-	
-	
+
 	// init mutexes for:
 	//	- philo_amount of forks
 	//	- printing messages to the console

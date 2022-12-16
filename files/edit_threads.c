@@ -6,7 +6,7 @@
 /*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 05:08:58 by mmensing          #+#    #+#             */
-/*   Updated: 2022/12/15 01:08:15 by mmensing         ###   ########.fr       */
+/*   Updated: 2022/12/15 16:07:48 by mmensing         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,26 @@
 
 // checks if somebody died
 // changes bool variable to
-// true -> if somebody died
-// false -> if everybody is alive
-void somebody_died(t_philo *philo)
+// 1 -> if somebody died
+// 0 -> if everybody is alive
+int32_t somebody_died(t_philo *philo)
 {
+
+	// if the status got already changed to somebody died
+	pthread_mutex_lock(&philo->philo_data->m_somebody_died);
+	if (philo->somebody_died == true)
+	{
+		pthread_mutex_unlock(&philo->philo_data->m_somebody_died);
+		return (1);
+	}
 	
+	// check if there is enough time left between eating last time and death time
+	
+
+	
+	
+
+	return (0);
 }
 
 
@@ -31,57 +46,57 @@ void grab_forks(t_philo *philo)
 // ------------------ for right forks -----------------------------------------
 	// locking mutex for printing message and right fork
 	pthread_mutex_lock(philo->right_fork);
-	pthread_mutex_lock(&philo->philo_data->msg);
+	pthread_mutex_lock(&philo->philo_data->m_msg);
 	
 	// get current time
-	curr_time = get_time() - philo->starting_time;
+	curr_time = get_time() - philo->philo_data->program_start_time;
 	
 	// if somebody died, unlock locked mutexes (preventing bullshit lol)
 	if (somebody_died(philo))
 	{
 		pthread_mutex_unlock(philo->right_fork);
-		pthread_mutex_unlock(&philo->philo_data->msg);
+		pthread_mutex_unlock(&philo->philo_data->m_msg);
 		return ;
 	}
 	// if somebody died, unlock locked mutexes (preventing bullshit lol)
 	if (somebody_died(philo))
 	{
 		pthread_mutex_unlock(philo->right_fork);
-		pthread_mutex_unlock(&philo->philo_data->msg);
+		pthread_mutex_unlock(&philo->philo_data->m_msg);
 		return ;
 	}
 	// printing unlocking mutex for printing the message
 	printf("%lld %d Has taken a right fork\n", curr_time, philo->id);
-	pthread_mutex_unlock(&philo->philo_data->msg);
+	pthread_mutex_unlock(&philo->philo_data->m_msg);
 	
 	
 // ------------------ now for left forks -----------------------------------------
 	pthread_mutex_lock(philo->left_fork);
-	pthread_mutex_lock(&philo->philo_data->msg);
+	pthread_mutex_lock(&philo->philo_data->m_msg);
 	
 	// get current time again cause time has passed
-	curr_time = get_time() - philo->starting_time;
+	curr_time = get_time() - philo->philo_data->program_start_time;
 	
 	// if somebody died, unlock locked mutexes (preventing bullshit lol)
 	if (somebody_died(philo))
 	{
 		pthread_mutex_unlock(philo->right_fork);
 		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(&philo->philo_data->msg);
+		pthread_mutex_unlock(&philo->philo_data->m_msg);
 		return ;
 	}
 	printf("%lld %d Has taken a left fork\n", curr_time, philo->id);
 	
 	// unlock mutex for printing message
-	pthread_mutex_unlock(&philo->philo_data->msg);
+	pthread_mutex_unlock(&philo->philo_data->m_msg);
 }
 
 void *philo_routine(t_philo *philo)
 {
 	
 	// getting time when the thread starts
-	philo->starting_time = get_time();
-	philo->last_ate = philo->starting_time;
+	philo->philo_data->program_start_time = get_time();
+	philo->last_ate = philo->philo_data->program_start_time;
 	printf("current id: %d\n", philo->id);
 	// get current timestamp
 	
@@ -106,9 +121,9 @@ void *philo_routine(t_philo *philo)
 		
 		// break condition if the amount of times to eat got reached
 		
-		sleeping(philo);
+		// sleeping(philo);
 		
-		thinking(philo);
+		// thinking(philo);
 	}
 	return (NULL);
 }
