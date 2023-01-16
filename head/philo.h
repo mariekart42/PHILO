@@ -6,7 +6,7 @@
 /*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:30:14 by mmensing          #+#    #+#             */
-/*   Updated: 2023/01/16 15:50:01 by mmensing         ###   ########.fr       */
+/*   Updated: 2023/01/16 17:33:31 by mmensing         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct s_philo
     pthread_mutex_t mutex_left_fork;
     pthread_mutex_t mutex_right_fork;
     pthread_mutex_t mutex_message;
+    pthread_mutex_t mutex_death;
 }				t_philo;
 
 //      handle_input.c
@@ -83,5 +84,6 @@ int32_t whitespace(char c);
 
 //      routine.c
 void philo_routine(t_philo *philo);
-
+bool philosopher_died(t_philo *philo);
+void grab_forks(t_philo *philo);
 # endif
