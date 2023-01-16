@@ -10,7 +10,9 @@ NAME = philo
 
 LIBFT= include/libft/libft.a
 
-FILES=	files/main.c
+FILES=	files/main.c \
+		files/hanlde_input.c \
+		files/routine.c
 
 # testing/threading.c
 O_FILES= $(FILES:%.c=%.o)
