@@ -6,7 +6,7 @@
 /*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:30:14 by mmensing          #+#    #+#             */
-/*   Updated: 2023/01/16 17:33:31 by mmensing         ###   ########.fr       */
+/*   Updated: 2023/01/17 14:30:09 by mmensing         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ typedef struct s_philo
     
     int64_t     time_routine_start;
     
+    bool        philo_died;
+
     int32_t     amount_philos;
     
     int32_t     id;
@@ -78,12 +80,24 @@ typedef struct s_philo
 }				t_philo;
 
 //      handle_input.c
-void check_input(t_data *data, int32_t ac, char **av);
+void check_input(int32_t ac, char **av);
 int32_t check_for_valid_arg(char *av);
 int32_t whitespace(char c);
 
 //      routine.c
 void philo_routine(t_philo *philo);
+void eating(t_philo *philo);
+void sleeping(t_philo *philo);
+void thinking(t_philo *philo);
 bool philosopher_died(t_philo *philo);
 void grab_forks(t_philo *philo);
+
+//      utils.c
+void	error_msg(char *msg);
+int64_t get_time();
+void create_mutexes(t_data *data, t_philo *philos);
+void init_threads(t_data *data, t_philo *philo);
+void execute_threads(t_data *data, t_philo *philos);
+void waiting_for_threads(t_data *data, t_philo *philos);
+
 # endif

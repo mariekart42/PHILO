@@ -1,6 +1,6 @@
 #include "../head/philo.h"
 
-void check_input(t_data *data, int32_t ac, char **av)
+void check_input(int32_t ac, char **av)
 {
     int32_t i;
 
@@ -15,8 +15,7 @@ void check_input(t_data *data, int32_t ac, char **av)
 			error_msg("Arguments contain non digit Characters!\n");
 		i++;
 	}
-    // if (data->tt_eat + data->tt_sleep > data->tt_die)
-    if (ft_atoi(av[3]) + ft_atoi(av[4] > ft_atoi(2)))
+    if (ft_atoi(av[3]) + ft_atoi(av[4]) > ft_atoi(av[2]))
 		error_msg("Invalid input! The time to eat and sleep must not exceed the time to die!");
 }
 

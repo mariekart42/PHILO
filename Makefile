@@ -11,8 +11,9 @@ NAME = philo
 LIBFT= include/libft/libft.a
 
 FILES=	files/main.c \
-		files/hanlde_input.c \
-		files/routine.c
+		files/handle_input.c \
+		files/routine.c \
+		files/utils.c
 
 # testing/threading.c
 O_FILES= $(FILES:%.c=%.o)
