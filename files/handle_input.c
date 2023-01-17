@@ -4,7 +4,7 @@ void check_input(int32_t ac, char **av)
 {
     int32_t i;
 
-    i = 0;
+    i = 1;
     if (ac != 5 && ac != 6)
         error_msg("Wrong input! usage: ./philo <param> <param> <param> <param>");
 	if (ft_atoi(av[1]) < 2)

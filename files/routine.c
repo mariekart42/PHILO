@@ -27,6 +27,12 @@ void philo_routine(t_philo *philo)
 
     // think
 		thinking(philo);
+
+		if (philosopher_died(philo) == true)
+		{
+			printf(MAG"DEATTTTTTTHHHHH\n"RESET);
+			exit(0);
+		}
     }
 
 
@@ -35,7 +41,7 @@ void philo_routine(t_philo *philo)
 void eating(t_philo *philo)
 {
 	int64_t		current_time;
-	int64_t		finished_eating_time;
+	// int64_t		finished_eating_time;
 
 	if (philosopher_died(philo) == true)
 	{
@@ -44,13 +50,13 @@ void eating(t_philo *philo)
 		return ;
 	}
 	current_time = get_time() - philo->time_routine_start;
-	finished_eating_time = current_time + philo->tt_eat;
+	philo->finished_eating = current_time + philo->tt_eat;
 
 	pthread_mutex_lock(&philo->mutex_message);
 	printf("%lld %d is eating\n", current_time, philo->id);
 	pthread_mutex_unlock(&philo->mutex_message);
 
-	while (current_time <= finished_eating_time)
+	while (current_time <= philo->finished_eating)
 	{
 		if (philosopher_died(philo) == true)
 		{
@@ -106,6 +112,8 @@ bool philosopher_died(t_philo *philo)
 	// philosopher is dead if:
 	//	- starved before eating
 
+	int64_t		current_time;
+
 	pthread_mutex_lock(&philo->mutex_death);
 
 	if (philo->philo_died == true)
@@ -113,7 +121,16 @@ bool philosopher_died(t_philo *philo)
 		pthread_mutex_unlock(&philo->mutex_death);
 		return (true);
 	}
-
+	if ((get_time() - philo->finished_eating) >= philo->tt_die)
+	{
+		pthread_mutex_lock(&philo->mutex_message);
+		current_time = get_time() - philo->time_routine_start;
+		printf(RED"%lld %d died\n"RESET, current_time, philo->id);
+		pthread_mutex_unlock(&philo->mutex_message);
+		philo->philo_died = true;
+		pthread_mutex_unlock(&philo->mutex_death);
+		return (true);
+	}
 
 	pthread_mutex_unlock(&philo->mutex_death);
 	return (false);
@@ -139,7 +156,7 @@ void grab_forks(t_philo *philo)
 		return ;
 	}
 
-	printf("%lld %d Has taken a left fork\n", current_time, philo->id);
+	printf("%lld %d has taken a fork\n", current_time, philo->id);
 	pthread_mutex_unlock(&philo->mutex_left_fork);
 	pthread_mutex_unlock(&philo->mutex_message);
 
@@ -154,18 +171,7 @@ void grab_forks(t_philo *philo)
 		return ;
 	}
 
-	printf("%lld %d Has taken a right fork\n", current_time, philo->id);
+	printf("%lld %d has taken a fork\n", current_time, philo->id);
 	pthread_mutex_unlock(&philo->mutex_right_fork);
 	pthread_mutex_unlock(&philo->mutex_message);
 }
-
-
-// !! finish grab fork function
-//		write a "if died" function
-//		-> not 100% sure about it
-
-// sleeping, eating function prolly crap
-//	-> prolly needs to protected with more mutexes lol
-// really times 1000 for unsleep??
-
-// how long is a philosopher thinking?

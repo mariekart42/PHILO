@@ -6,7 +6,7 @@
 /*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:30:14 by mmensing          #+#    #+#             */
-/*   Updated: 2023/01/17 14:30:09 by mmensing         ###   ########.fr       */
+/*   Updated: 2023/01/17 17:48:46 by mmensing         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct s_philo
     pthread_t   thread;
     
     int64_t     time_routine_start;
-    
+    int64_t     finished_eating;
     bool        philo_died;
 
     int32_t     amount_philos;
@@ -95,9 +95,10 @@ void grab_forks(t_philo *philo);
 //      utils.c
 void	error_msg(char *msg);
 int64_t get_time();
-void create_mutexes(t_data *data, t_philo *philos);
-void init_threads(t_data *data, t_philo *philo);
-void execute_threads(t_data *data, t_philo *philos);
-void waiting_for_threads(t_data *data, t_philo *philos);
+void create_mutexes(t_philo *philos);
+void init_threads(t_philo *philo, char **av);
+void execute_threads(t_philo *philos);
+void waiting_for_threads(t_philo *philos);
+void destroy_mutexes(t_philo *philos);
 
 # endif
