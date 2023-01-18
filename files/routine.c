@@ -12,10 +12,11 @@ void philo_routine(t_philo *philo)
 		else
 			usleep(1500);
 	}
-
+	pthread_mutex_lock(&philo->mutex_message);
+printf("before while routine loop\n");
+	pthread_mutex_unlock(&philo->mutex_message);
     while (1)
     {
-
     // grab forks
 		grab_forks(philo);
 

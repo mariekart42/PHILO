@@ -8,12 +8,12 @@
 
 int main(int32_t ac, char **av)
 {
-    t_data  data;
+    // t_data  data;
     t_philo *philos = NULL;
 
     check_input(ac, av);
-
-    philos = malloc(sizeof(t_philo) * data.amount_philos);
+// printf("am: %d\n", philos->amount_philos);
+    philos = malloc(sizeof(t_philo) * ft_atoi(av[1]));
     if (!philos)
         error_msg("Error! Failed to malloc for philosopher!\n");
     philos->amount_philos = ft_atoi(av[1]);
@@ -25,13 +25,13 @@ int main(int32_t ac, char **av)
     // mutex for left and right fork
     // mutex for printing messages
     create_mutexes(philos);
+printf(GRN"check\n"RESET);
 
 // init philosopher with needed data:
     init_threads(philos, av);
 
 // create threads:
     execute_threads(philos);
-printf(GRN"check\n"RESET);
 
 // waiting for threads:
     waiting_for_threads(philos);
@@ -41,5 +41,6 @@ printf(GRN"check\n"RESET);
 		
 }
 
-// segfaulting in create mutexes
-// something with not allocating memorie correctly
+
+
+// init left and right fork to the philos

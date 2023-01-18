@@ -19,19 +19,25 @@ void create_mutexes(t_philo *philos)
 {
     int32_t i = 0;
 // create philos amount of mutexes for forks
-printf("ämount philoa: %d\n", philos->amount_philos);
+printf(GRN"check\n"RESET);
     philos->mutex_forks = malloc(sizeof(pthread_mutex_t) * philos->amount_philos);
     if (!philos->mutex_forks)
         error_msg("Error! Failed to malloc for forks!");
-    while (i < philos->amount_philos)
-    {
-        printf(GRN"loop check\n"RESET);
+    printf("amount philo: %d\n", philos->amount_philos);
+    // while (i < philos->amount_philos)
+    // {
+    //     if (pthread_mutex_init(&philos->mutex_forks[i], NULL))
+    //         error_msg("Error! Failed to create mutex for fork!");
+    //     printf("bla: %d\n", i);
+    //     i++;
+    // }
         if (pthread_mutex_init(&philos->mutex_forks[i], NULL))
             error_msg("Error! Failed to create mutex for fork!");
         i++;
-    }
-
-printf("check before seg\n");
+        if (pthread_mutex_init(&philos->mutex_forks[i], NULL))
+            error_msg("Error! Failed to create mutex for fork!");
+printf("after seg?\n");
+exit(0);
 // create mutex for left and right fork
     if (pthread_mutex_init(&philos->mutex_left_fork, NULL))
         error_msg("Error! Failed to create mutex for left fork!");
@@ -45,7 +51,6 @@ printf("check before seg\n");
 // create mutex for death of philosopher
     if (pthread_mutex_init(&philos->mutex_death, NULL))
         error_msg("Error! Failed to create mutex for death of philosopher!");
-
 }
 
 void init_threads(t_philo *philo, char **av)
@@ -57,7 +62,7 @@ void init_threads(t_philo *philo, char **av)
         philo[i].tt_die = ft_atoi(av[2]);
         philo[i].tt_eat = ft_atoi(av[3]);
         philo[i].tt_sleep = ft_atoi(av[4]);
-
+        philo[i].philo_died = false;
         philo[i].id = i + 1;
         i++;
     }
@@ -66,10 +71,10 @@ void init_threads(t_philo *philo, char **av)
 void execute_threads(t_philo *philos)
 {
     int32_t i = 0;
-    printf("amount philos: %d\n", philos->amount_philos);
+
     while (i < philos->amount_philos)
     {
-printf("thread: %d got created\n", philos[i].id);
+printf(YEL"thread: %d got created\n"RESET, philos[i].id);
     	// creating thread and pass current philosopher to routine function
 		if (pthread_create(&philos[i].thread, NULL, (void *)philo_routine, &philos[i]))
 			error_msg("Error! Failes to create thread!");
