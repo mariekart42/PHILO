@@ -6,7 +6,7 @@
 /*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:30:14 by mmensing          #+#    #+#             */
-/*   Updated: 2023/01/17 17:48:46 by mmensing         ###   ########.fr       */
+/*   Updated: 2023/01/19 17:02:55 by mmensing         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,11 @@ typedef struct s_data
     int32_t     amount_philos;
     char        **av;
     
+    // array of forks -> amount of philosophers forks
+    pthread_mutex_t *mutex_forks;
+    pthread_mutex_t mutex_message;
+    pthread_mutex_t mutex_death;
+    
 //  !! till now i dont need the next 4 here!
     // int32_t     tt_die;
     // int32_t     tt_eat;
@@ -58,7 +63,9 @@ typedef struct s_philo
 {	
     pthread_t   thread;
     
+    int32_t     eaten_meals;
     int64_t     time_routine_start;
+    int64_t     time_program_starts;
     int64_t     finished_eating;
     bool        philo_died;
 
@@ -66,17 +73,15 @@ typedef struct s_philo
     
     int32_t     id;
     
-    int32_t     tt_die;
-    int32_t     tt_eat;
-    int32_t     tt_sleep;
-    int32_t     times_philo_eats;
+    int64_t     tt_die;
+    int64_t     tt_eat;
+    int64_t     tt_sleep;
+    int64_t     times_philo_eats;
     
-    // array of forks -> amount of philosophers forks
-    pthread_mutex_t *mutex_forks;
-    pthread_mutex_t mutex_left_fork;
-    pthread_mutex_t mutex_right_fork;
-    pthread_mutex_t mutex_message;
-    pthread_mutex_t mutex_death;
+    pthread_mutex_t *mutex_left_fork;
+    pthread_mutex_t *mutex_right_fork;
+    
+    t_data          *access;
 }				t_philo;
 
 //      handle_input.c
@@ -95,10 +100,10 @@ void grab_forks(t_philo *philo);
 //      utils.c
 void	error_msg(char *msg);
 int64_t get_time();
-void create_mutexes(t_philo *philos);
-void init_threads(t_philo *philo, char **av);
+void create_mutexes(t_data *data);
+void init_threads(t_philo *philo, t_data *data, char **av);
 void execute_threads(t_philo *philos);
 void waiting_for_threads(t_philo *philos);
-void destroy_mutexes(t_philo *philos);
+void destroy_mutexes(t_data *data);
 
 # endif
