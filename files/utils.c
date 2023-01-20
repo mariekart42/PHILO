@@ -44,19 +44,20 @@ void init_threads(t_philo *philo, t_data *data, char **av)
 {
     int32_t i = 0;
 
-    while (i < philo->amount_philos)
+    while (i < data->amount_philos)
     {
-        philo[i].eaten_meals = 0;
-
+        philo[i].id = i + 1;
         philo[i].tt_die = ft_atoi(av[2]);
         philo[i].tt_eat = ft_atoi(av[3]);
         philo[i].tt_sleep = ft_atoi(av[4]);
-        philo[i].philo_died = false;
-        philo[i].finished_eating = get_time();
-        philo[i].time_program_starts = get_time();
+        philo[i].eaten_meals = 0;
+        philo[i].finished_eating = data->start_program;
         philo[i].mutex_right_fork = &data->mutex_forks[i];
-        philo[i].mutex_left_fork = &data->mutex_forks[(i + 1) % philo->amount_philos];
-        philo[i].id = i + 1;
+        philo[i].mutex_left_fork = &data->mutex_forks[(i + 1) % data->amount_philos];
+        philo[i].access = data;
+        philo[i].time_program_starts = data->start_program;
+        philo[i].amount_philos = data->amount_philos;
+        philo[i].philo_died = false;
         i++;
     }
 }

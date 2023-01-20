@@ -18,24 +18,13 @@ int main(int32_t ac, char **av)
     philos = malloc(sizeof(t_philo) * data.amount_philos);
     if (!philos)
         error_msg("Error! Failed to malloc for philosopher!\n");
-        
-    philos->amount_philos = ft_atoi(av[1]);
-
-// init philosopher with needed data:
     init_threads(philos, &data, av);
-
-// create threads:
     execute_threads(philos);
+    waiting_for_threads(philos);
+    destroy_mutexes(&data);
 // printf(MAG"exit statement\n"RESET);
 // exit(0);
 printf(GRN"check\n"RESET);
-
-// waiting for threads:
-    waiting_for_threads(philos);
-
-// destroy mutexes:
-    destroy_mutexes(&data);
-
     free(philos);
     free(data.mutex_forks);
 	return(0);
@@ -43,4 +32,4 @@ printf(GRN"check\n"RESET);
 
 
 
-// init left and right fork to the philos
+// transfer bool if philo died into data struct and change everything over access

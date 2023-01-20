@@ -18,6 +18,7 @@ void init_data(t_data *data, int32_t ac, char **av)
 	}
     if (ft_atoi(av[3]) + ft_atoi(av[4]) > ft_atoi(av[2]))
 		error_msg("Invalid input! The time to eat and sleep must not exceed the time to die!");
+	data->start_program = get_time();
 }
 
 /* function checks for valid input (only digits or whitespaces)

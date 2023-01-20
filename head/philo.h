@@ -43,7 +43,8 @@ typedef struct s_data
 {
     int32_t     amount_philos;
     char        **av;
-    
+    int64_t     start_program;
+
     // array of forks -> amount of philosophers forks
     pthread_mutex_t *mutex_forks;
     pthread_mutex_t mutex_message;
