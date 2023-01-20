@@ -18,26 +18,18 @@ int64_t get_time()
 void create_mutexes(t_data *data)
 {
     int32_t i = 0;
-// create philos amount of mutexes for forks
 
     data->mutex_forks = malloc(sizeof(pthread_mutex_t) * data->amount_philos);
     if (!data->mutex_forks)
         error_msg("Error! Failed to malloc for forks!");
 
-    printf("amount philo: %d\n", data->amount_philos);
-
+// create philos amount of mutexes for forks
     while (i < data->amount_philos)
     {
         if (pthread_mutex_init(&data->mutex_forks[i], NULL))
             error_msg("Error! Failed to create mutex for fork!");
         i++;
     }
-    
-// // create mutex for left and right fork
-//     if (pthread_mutex_init(&philos->mutex_left_fork, NULL))
-//         error_msg("Error! Failed to create mutex for left fork!");
-//     if (pthread_mutex_init(&philos->mutex_right_fork, NULL))
-//         error_msg("Error! Failed to create mutex for right fork!");
 
 // create mutex for messages
     if (pthread_mutex_init(&data->mutex_message, NULL))
@@ -54,11 +46,12 @@ void init_threads(t_philo *philo, t_data *data, char **av)
 
     while (i < philo->amount_philos)
     {
+        philo[i].eaten_meals = 0;
+
         philo[i].tt_die = ft_atoi(av[2]);
         philo[i].tt_eat = ft_atoi(av[3]);
         philo[i].tt_sleep = ft_atoi(av[4]);
         philo[i].philo_died = false;
-        philo[i].eaten_meals = 0;
         philo[i].finished_eating = get_time();
         philo[i].time_program_starts = get_time();
         philo[i].mutex_right_fork = &data->mutex_forks[i];
@@ -74,10 +67,10 @@ void execute_threads(t_philo *philos)
 
     while (i < philos->amount_philos)
     {
-printf(YEL"thread: %d got created\n"RESET, philos[i].id);
     	// creating thread and pass current philosopher to routine function
 		if (pthread_create(&philos[i].thread, NULL, (void *)philo_routine, &philos[i]))
 			error_msg("Error! Failed to create thread!");
+printf(YEL"thread: %d got created\n"RESET, philos[i].id);
         i++;
     }
 }

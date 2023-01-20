@@ -85,7 +85,7 @@ typedef struct s_philo
 }				t_philo;
 
 //      handle_input.c
-void check_input(int32_t ac, char **av);
+void init_data(t_data *data, int32_t ac, char **av);
 int32_t check_for_valid_arg(char *av);
 int32_t whitespace(char c);
 

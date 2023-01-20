@@ -1,13 +1,14 @@
 #include "../head/philo.h"
 
-void check_input(int32_t ac, char **av)
+void init_data(t_data *data, int32_t ac, char **av)
 {
     int32_t i;
 
     i = 1;
+    data->amount_philos = ft_atoi(av[1]);
     if (ac != 5 && ac != 6)
         error_msg("Wrong input! usage: ./philo <param> <param> <param> <param>");
-	if (ft_atoi(av[1]) < 2)
+	if (data->amount_philos < 2)
 		error_msg("Invalid input! Minimum 2 philosophers!");
 	while (i < ac)
 	{

@@ -2,6 +2,7 @@
 
 void philo_routine(t_philo *philo)
 {
+printf("in routine philo: %d\n", philo->id);
     philo->time_routine_start = get_time();
 	philo->finished_eating = philo->time_routine_start;
 // waiting for philosopher longer if id is !%2=0
@@ -17,7 +18,9 @@ void philo_routine(t_philo *philo)
     // grab forks
 		grab_forks(philo);
     // eat
+	printf("philo %d grabed forks\n", philo->id);
 		eating(philo);
+	printf("philo %d was eating\n", philo->id);
 		if (philosopher_died(philo) == true)
 		{
 			printf(MAG"DEAD after eating\n"RESET);
@@ -28,9 +31,11 @@ void philo_routine(t_philo *philo)
 			break ;
     // sleep
 		sleeping(philo);
+	printf("philo %d was sleeping\n", philo->id);
 
     // think
 		thinking(philo);
+	printf("philo %d thought\n", philo->id);
     }
 }
 
