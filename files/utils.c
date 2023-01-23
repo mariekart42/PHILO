@@ -57,7 +57,6 @@ void init_threads(t_philo *philo, t_data *data, char **av)
         philo[i].access = data;
         philo[i].time_program_starts = data->start_program;
         philo[i].amount_philos = data->amount_philos;
-        philo[i].philo_died = false;
         i++;
     }
 }
@@ -71,7 +70,7 @@ void execute_threads(t_philo *philos)
     	// creating thread and pass current philosopher to routine function
 		if (pthread_create(&philos[i].thread, NULL, (void *)philo_routine, &philos[i]))
 			error_msg("Error! Failed to create thread!");
-printf(YEL"thread: %d got created\n"RESET, philos[i].id);
+// printf(YEL"thread: %d got created\n"RESET, philos[i].id);
         i++;
     }
 }
@@ -82,11 +81,12 @@ void waiting_for_threads(t_philo *philos)
 
     while (i < philos->amount_philos)
     {
-    printf("waited for thread: %d\n", philos->id);
+    // printf("waited for thread: %d\n", philos->id);
         if (pthread_join(philos[i].thread, NULL))
             error_msg("Error! Failed to execute thread!");
         i++;
     }
+    // printf("after waiting loop\n");
 }
 
 void destroy_mutexes(t_data *data)

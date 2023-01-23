@@ -49,6 +49,8 @@ typedef struct s_data
     pthread_mutex_t *mutex_forks;
     pthread_mutex_t mutex_message;
     pthread_mutex_t mutex_death;
+
+    bool        philo_died;
     
 //  !! till now i dont need the next 4 here!
     // int32_t     tt_die;
@@ -68,7 +70,7 @@ typedef struct s_philo
     int64_t     time_routine_start;
     int64_t     time_program_starts;
     int64_t     finished_eating;
-    bool        philo_died;
+    // bool        philo_died;
 
     int32_t     amount_philos;
     

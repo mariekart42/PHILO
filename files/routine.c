@@ -2,7 +2,7 @@
 
 void philo_routine(t_philo *philo)
 {
-// printf("in routine philo: %d\n", philo->id);
+// printf(BLU"in routine philo: %d\n"RESET, philo->id);
     philo->time_routine_start = get_time();
 	philo->finished_eating = philo->time_routine_start;
 // waiting for philosopher longer if id is !%2=0
@@ -15,15 +15,19 @@ void philo_routine(t_philo *philo)
 	}
     while (1)
     {
+		// printf("before grab fork\n");
 		grab_forks(philo);
+		// printf("before grab eating\n");
 		eating(philo);
 
 
 	// printf("philo %d was eating\n", philo->id);
-		if (philosopher_died(philo) == true)
+		// if (philosopher_died(philo) == true)
+		if (philo->access->philo_died == true)
 		{
-			printf(MAG"DEAD after eating\n"RESET);
-			exit(0);
+			pthread_mutex_lock(&philo->access->mutex_message);
+			// printf(MAG"DEAD after eating\n"RESET);
+			pthread_mutex_unlock(&philo->access->mutex_message);
 			break ;
 		}
 		if (philo->eaten_meals == philo->times_philo_eats)
@@ -32,8 +36,10 @@ void philo_routine(t_philo *philo)
 	// printf("philo %d was sleeping\n", philo->id);
 
 		thinking(philo);
+		// printf("after thinking\n");
 	// printf("philo %d thought\n", philo->id);
     }
+	// printf("OUT OF LOOP Philo id: %d\n", philo->id);
 }
 
 
@@ -86,7 +92,7 @@ void eating(t_philo *philo)
 	if (philosopher_died(philo) == true)
 	{
 		pthread_mutex_unlock(&philo->access->mutex_message);
-		printf("philo died in eating\n");
+		// printf("philo died in eating\n");
 		return ;
 	}
 	printf("%lld %d is eating\n", current_time, philo->id);
@@ -96,9 +102,9 @@ void eating(t_philo *philo)
 // printf(BLU"\tcurrent:\t%lld\n\tfin eat:\t%lld\n"RESET, current_time, philo->finished_eating);
 	while (get_time() <= finished_eating_time)
 	{
-		// printf("died in eating in while loop\n");
 		if (philosopher_died(philo) == true)
 		{
+		// printf("died in eating in while loop\n");
 			pthread_mutex_unlock(philo->mutex_left_fork);
 			pthread_mutex_unlock(philo->mutex_right_fork);
 			return ;
@@ -164,7 +170,7 @@ bool philosopher_died(t_philo *philo)
 	int64_t		current_time;
 
 	pthread_mutex_lock(&philo->access->mutex_death);
-	if (philo->philo_died == true)
+	if (philo->access->philo_died == true)
 	{
 		pthread_mutex_unlock(&philo->access->mutex_death);
 		return (true);
@@ -175,8 +181,9 @@ bool philosopher_died(t_philo *philo)
 		current_time = get_time() - philo->time_program_starts;
 		printf(RED"%lld %d died\n"RESET, current_time, philo->id);
 		pthread_mutex_unlock(&philo->access->mutex_message);
-		philo->philo_died = true;
+		philo->access->philo_died = true;
 		pthread_mutex_unlock(&philo->access->mutex_death);
+		// printf("BLA\n");
 		return (true);
 	}
 
