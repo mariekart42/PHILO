@@ -27,8 +27,9 @@ void init_data(t_data *data, int32_t ac, char **av)
  * returns 0 for valid input								*/
 int32_t check_for_valid_arg(char *av)
 {
-	int32_t i = 0;
+	int32_t i;
 
+	i = 0;
 	while (av[i] != '\0')
 	{
 		if (!ft_isdigit(av[i]) && whitespace(av[i]))
@@ -36,7 +37,6 @@ int32_t check_for_valid_arg(char *av)
 		i++;
 	}
 	return (0);
-	// check later also if arguments make sense etc (if that makes sense lol)
 }
 
 /* function checks if c is any kind of whitespace

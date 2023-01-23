@@ -6,8 +6,6 @@
 // av[4] = tt sleep
 // ( av[5] = meal times )
 
-
-
 int main(int32_t ac, char **av)
 {
     t_data  data;
@@ -21,16 +19,8 @@ int main(int32_t ac, char **av)
     init_threads(philos, &data, av);
     execute_threads(philos);
     waiting_for_threads(philos);
-    printf(BLU"HERE\n");
     destroy_mutexes(&data);
-// printf(MAG"exit statement\n"RESET);
-// exit(0);
-// printf(GRN"check\n"RESET);
     free(philos);
     free(data.mutex_forks);
 	return(0);
 }
-
-
-
-// transfer bool if philo died into data struct and change everything over access
