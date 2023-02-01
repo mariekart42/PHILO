@@ -9,25 +9,21 @@ void	grab_forks(t_philo *philo)
 	if (philosopher_died(philo) == true)
 	{
 		pthread_mutex_unlock(philo->mutex_right_fork);
-		// pthread_mutex_unlock(&philo->access->mutex_message);
 		return ;
 	}
 	pthread_mutex_lock(&philo->access->mutex_message);
 	printf(GRN"%lld %d has taken a right fork\n"RESET, current_time, philo->id);
 	pthread_mutex_unlock(&philo->access->mutex_message);
-			printf(RED"test\n"RESET);
 	pthread_mutex_lock(philo->mutex_left_fork);
 	current_time = get_time() - philo->time_program_starts;
 	if (philosopher_died(philo) == true)
 	{
 		pthread_mutex_unlock(philo->mutex_right_fork);
 		pthread_mutex_unlock(philo->mutex_left_fork);
-		// pthread_mutex_unlock(&philo->access->mutex_message);
 		return ;
 	}
 	pthread_mutex_lock(&philo->access->mutex_message);
 	printf(GRN"%lld %d has taken a left fork\n"RESET, current_time, philo->id);
-
 	pthread_mutex_unlock(&philo->access->mutex_message);
 }
 

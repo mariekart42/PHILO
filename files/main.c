@@ -17,8 +17,6 @@ void	philo_routine(t_philo *philo)
 		eating(philo);
 		if (philo->access->philo_died == true)
 		{
-			pthread_mutex_lock(&philo->access->mutex_message);
-			pthread_mutex_unlock(&philo->access->mutex_message);
 			break ;
 		}
 		if (philo->eaten_meals == philo->times_philo_eats)
