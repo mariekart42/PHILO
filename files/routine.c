@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   routine.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/01 20:08:18 by mmensing          #+#    #+#             */
+/*   Updated: 2023/02/01 20:08:18 by mmensing         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../head/philo.h"
 
 void	grab_forks(t_philo *philo)
@@ -62,10 +74,7 @@ void	sleeping(t_philo *philo)
 
 	current_time = get_time() - philo->time_program_starts;
 	if (philosopher_died(philo) == true)
-	{
-		// pthread_mutex_unlock(&philo->access->mutex_message);
 		return ;
-	}
 	pthread_mutex_lock(&philo->access->mutex_message);
 	printf(BLU"%lld %d is sleeping\n"RESET, current_time, philo->id);
 	pthread_mutex_unlock(&philo->access->mutex_message);

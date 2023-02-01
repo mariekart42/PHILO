@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   threads.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/01 20:08:24 by mmensing          #+#    #+#             */
+/*   Updated: 2023/02/01 20:08:24 by mmensing         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../head/philo.h"
 
 void	init_threads(t_philo *philo, t_data *data, char **av, int32_t ac)
@@ -13,7 +25,6 @@ void	init_threads(t_philo *philo, t_data *data, char **av, int32_t ac)
 		philo[i].tt_sleep = ft_atoi(av[4]);
 		if (ac == 6)
 			philo[i].times_philo_eats = ft_atoi(av[5]);
-		// philo[i].times_philo_eats = ft_atoi(av[5]);
 		philo[i].eaten_meals = 0;
 		philo[i].finished_eating = data->start_program;
 		philo[i].mutex_right_fork = &data->mutex_forks[i];

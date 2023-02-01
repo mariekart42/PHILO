@@ -6,7 +6,7 @@
 /*   By: mmensing <mmensing@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:30:14 by mmensing          #+#    #+#             */
-/*   Updated: 2023/01/19 17:02:55 by mmensing         ###   ########.fr       */
+/*   Updated: 2023/02/01 20:09:43 by mmensing         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdbool.h>
-
-// for threads
 # include <pthread.h>
-
-// for get time 
 # include <sys/time.h>
-
-// libft
 # include "../include/libft/libft.h"
 
 //colour shit
@@ -92,4 +86,4 @@ int64_t	get_time(void);
 void	init_data(t_data *data, int32_t ac, char **av);
 int32_t	check_for_valid_arg(char *av);
 
-# endif
+#endif
