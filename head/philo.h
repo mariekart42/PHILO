@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef PHILO_H
+#ifndef PHILO_H
 # define PHILO_H
 
 # include <stdio.h>
@@ -22,7 +22,7 @@
 # include <pthread.h>
 
 // for get time 
-#include <sys/time.h>
+# include <sys/time.h>
 
 // libft
 # include "../include/libft/libft.h"
@@ -37,66 +37,59 @@
 # define WHT   "\x1B[37m"
 # define RESET "\x1B[0m"
 
-
-
 typedef struct s_data
 {
-    int32_t     amount_philos;
-    char        **av;
-    int64_t     start_program;
-
-    // array of forks -> amount of philosophers forks
-    pthread_mutex_t *mutex_forks;
-    pthread_mutex_t mutex_message;
-    pthread_mutex_t mutex_death;
-
-    bool        philo_died;
+	char			**av;
+	int32_t			amount_philos;
+	int64_t			start_program;
+	pthread_mutex_t	*mutex_forks;
+	pthread_mutex_t	mutex_message;
+	pthread_mutex_t	mutex_death;
+	bool			philo_died;
 }				t_data;
 
 typedef struct s_philo
 {	
-    pthread_t   thread;
-    
-    int32_t     eaten_meals;
-    int64_t     time_routine_start;
-    int64_t     time_program_starts;
-    int64_t     finished_eating;
-
-    int32_t     amount_philos;
-    
-    int32_t     id;
-    
-    int64_t     tt_die;
-    int64_t     tt_eat;
-    int64_t     tt_sleep;
-    int64_t     times_philo_eats;
-    
-    pthread_mutex_t *mutex_left_fork;
-    pthread_mutex_t *mutex_right_fork;
-    
-    t_data          *access;
+	int32_t			eaten_meals;
+	int32_t			amount_philos;
+	int32_t			id;
+	int64_t			time_routine_start;
+	int64_t			time_program_starts;
+	int64_t			finished_eating;
+	int64_t			tt_die;
+	int64_t			tt_eat;
+	int64_t			tt_sleep;
+	int64_t			times_philo_eats;
+	pthread_t		thread;
+	pthread_mutex_t	*mutex_left_fork;
+	pthread_mutex_t	*mutex_right_fork;
+	t_data			*access;
 }				t_philo;
 
-//      handle_input.c
-void init_data(t_data *data, int32_t ac, char **av);
-int32_t check_for_valid_arg(char *av);
-int32_t whitespace(char c);
+//      main.c
+void	philo_routine(t_philo *philo);
+
+//      mutex.c
+void	create_mutexes(t_data *data);
+void	destroy_mutexes(t_data *data);
+
+//      threads.c
+void	init_threads(t_philo *philo, t_data *data, char **av, int32_t ac);
+void	execute_threads(t_philo *philos);
+void	waiting_for_threads(t_philo *philos);
 
 //      routine.c
-void philo_routine(t_philo *philo);
-void eating(t_philo *philo);
-void sleeping(t_philo *philo);
-void thinking(t_philo *philo);
-bool philosopher_died(t_philo *philo);
-void grab_forks(t_philo *philo);
+void	grab_forks(t_philo *philo);
+void	eating(t_philo *philo);
+void	sleeping(t_philo *philo);
+void	thinking(t_philo *philo);
+bool	philosopher_died(t_philo *philo);
 
 //      utils.c
+int32_t	whitespace(char c);
 void	error_msg(char *msg);
-int64_t get_time();
-void create_mutexes(t_data *data);
-void init_threads(t_philo *philo, t_data *data, char **av);
-void execute_threads(t_philo *philos);
-void waiting_for_threads(t_philo *philos);
-void destroy_mutexes(t_data *data);
+int64_t	get_time(void);
+void	init_data(t_data *data, int32_t ac, char **av);
+int32_t	check_for_valid_arg(char *av);
 
 # endif

@@ -1,99 +1,66 @@
 #include "../head/philo.h"
 
+/* function checks if c is any kind of whitespace
+ * returns 0 if c is whitespace
+ * returns 1 if c is something but whitespace	*/
+int32_t	whitespace(char c)
+{
+	if ((c >= 1 && c <= 31) || c == 127)
+		return (0);
+	return (1);
+}
+
 void	error_msg(char *msg)
 {
 	write(STDERR_FILENO, msg, ft_strlen(msg));
 	exit(EXIT_FAILURE);
 }
 
-int64_t get_time()
+int64_t	get_time(void)
 {
-    struct timeval  time;
+	struct timeval	time;
 
-    if (gettimeofday(&time, NULL) < 0)
-        error_msg("Error! Failed to get time of day!");
-    return ((time.tv_usec / 1000) + (time.tv_sec * 1000));
+	if (gettimeofday(&time, NULL) < 0)
+		error_msg("Error! Failed to get time of day!");
+	return ((time.tv_usec / 1000) + (time.tv_sec * 1000));
 }
 
-void create_mutexes(t_data *data)
+void	init_data(t_data *data, int32_t ac, char **av)
 {
-    int32_t i;
-    
-    i = 0;
-    data->mutex_forks = malloc(sizeof(pthread_mutex_t) * data->amount_philos);
-    if (!data->mutex_forks)
-        error_msg("Error! Failed to malloc for forks!");
-    while (i < data->amount_philos)
-    {
-        if (pthread_mutex_init(&data->mutex_forks[i], NULL))
-            error_msg("Error! Failed to create mutex for fork!");
-        i++;
-    }
-    if (pthread_mutex_init(&data->mutex_message, NULL))
-        error_msg("Error! Failed to create mutex for message!");
-    if (pthread_mutex_init(&data->mutex_death, NULL))
-        error_msg("Error! Failed to create mutex for death of philosopher!");
-}
+	int32_t	i;
 
-void init_threads(t_philo *philo, t_data *data, char **av)
-{
-    int32_t i = 0;
-
-    while (i < data->amount_philos)
-    {
-        philo[i].id = i + 1;
-        philo[i].tt_die = ft_atoi(av[2]);
-        philo[i].tt_eat = ft_atoi(av[3]);
-        philo[i].tt_sleep = ft_atoi(av[4]);
-        philo[i].eaten_meals = 0;
-        philo[i].finished_eating = data->start_program;
-        philo[i].mutex_right_fork = &data->mutex_forks[i];
-        philo[i].mutex_left_fork = &data->mutex_forks[(i + 1) % data->amount_philos];
-        philo[i].access = data;
-        philo[i].time_program_starts = data->start_program;
-        philo[i].amount_philos = data->amount_philos;
-        i++;
-    }
-}
-
-void execute_threads(t_philo *philos)
-{
-    int32_t i = 0;
-
-    while (i < philos->amount_philos)
-    {
-		if (pthread_create(&philos[i].thread, NULL, (void *)philo_routine, &philos[i]))
-			error_msg("Error! Failed to create thread!");
-        i++;
-        usleep(1000);
-    }
-}
-
-void waiting_for_threads(t_philo *philos)
-{
-    int32_t i;
-    
-    i = 0;
-    while (i < philos->amount_philos)
-    {
-        if (pthread_join(philos[i].thread, NULL))
-            error_msg("Error! Failed to execute thread!");
-        i++;
-    }
-}
-
-void destroy_mutexes(t_data *data)
-{
-	int32_t i = 0;
-	
-	while (i < data->amount_philos)
+	i = 1;
+	if (ac != 5 && ac != 6)
+		error_msg("Wrong input! usage: ./philo <arg> <arg> <arg> <arg>");
+	data->amount_philos = ft_atoi(av[1]);
+	if (data->amount_philos < 2)
+		error_msg("Invalid input! Minimum 2 philosophers!");
+	while (i < ac)
 	{
-		if (pthread_mutex_destroy(&data->mutex_forks[i]))
-			error_msg("Error! Failed to destroy mutex for fork!");
+		if (check_for_valid_arg(av[i]))
+			error_msg("Arguments contain non digit Characters!\n");
 		i++;
 	}
-	if (pthread_mutex_destroy(&data->mutex_message))
-		error_msg("Error! Failed to destroy mutex for messages!");
-	if (pthread_mutex_destroy(&data->mutex_death))
-		error_msg("Error! Failed to destroy mutex for death");
+	if (ft_atoi(av[3]) + ft_atoi(av[4]) > ft_atoi(av[2]))
+		error_msg("Invalid input! The time to eat and sleep must not \
+		exceed the time to die!");
+	data->start_program = get_time();
+	data->philo_died = false;
+}
+
+/* function checks for valid input (only digits or whitespaces)
+ * returns 1 for invalid input
+ * returns 0 for valid input								*/
+int32_t	check_for_valid_arg(char *av)
+{
+	int32_t	i;
+
+	i = 0;
+	while (av[i] != '\0')
+	{
+		if (!ft_isdigit(av[i]) && whitespace(av[i]))
+			return (1);
+		i++;
+	}
+	return (0);
 }

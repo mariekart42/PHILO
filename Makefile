@@ -1,21 +1,19 @@
 NAME= philo.a
-
 CC = gcc
 CFLAGS= -Wall -Werror -Wextra -pthread -g
-# -fsanitize=thread
 HEADER= philo.h
 RM= rm -rf
 NAME = philo
-#DEBUG = -fsanitize=address
+DEBUG = -fsanitize=address
 
 LIBFT= include/libft/libft.a
 
 FILES=	files/main.c \
-		files/handle_input.c \
+		files/utils.c \
 		files/routine.c \
-		files/utils.c
+		files/mutex.c \
+		files/threads.c
 
-# testing/threading.c
 O_FILES= $(FILES:%.c=%.o)
 
 all: $(NAME)
