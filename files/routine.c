@@ -5,27 +5,27 @@ void	grab_forks(t_philo *philo)
 	int64_t	current_time;
 
 	pthread_mutex_lock(philo->mutex_right_fork);
-	pthread_mutex_lock(&philo->access->mutex_message);
 	current_time = get_time() - philo->time_program_starts;
 	if (philosopher_died(philo) == true)
 	{
 		pthread_mutex_unlock(philo->mutex_right_fork);
-		pthread_mutex_unlock(&philo->access->mutex_message);
+		// pthread_mutex_unlock(&philo->access->mutex_message);
 		return ;
 	}
+	pthread_mutex_lock(&philo->access->mutex_message);
 	printf(GRN"%lld %d has taken a right fork\n"RESET, current_time, philo->id);
 	pthread_mutex_unlock(&philo->access->mutex_message);
 			printf(RED"test\n"RESET);
 	pthread_mutex_lock(philo->mutex_left_fork);
-	pthread_mutex_lock(&philo->access->mutex_message);
 	current_time = get_time() - philo->time_program_starts;
 	if (philosopher_died(philo) == true)
 	{
 		pthread_mutex_unlock(philo->mutex_right_fork);
 		pthread_mutex_unlock(philo->mutex_left_fork);
-		pthread_mutex_unlock(&philo->access->mutex_message);
+		// pthread_mutex_unlock(&philo->access->mutex_message);
 		return ;
 	}
+	pthread_mutex_lock(&philo->access->mutex_message);
 	printf(GRN"%lld %d has taken a left fork\n"RESET, current_time, philo->id);
 
 	pthread_mutex_unlock(&philo->access->mutex_message);
@@ -64,13 +64,13 @@ void	sleeping(t_philo *philo)
 	int64_t		current_time;
 	int64_t		finished_sleeping_time;
 
-	pthread_mutex_lock(&philo->access->mutex_message);
 	current_time = get_time() - philo->time_program_starts;
 	if (philosopher_died(philo) == true)
 	{
-		pthread_mutex_unlock(&philo->access->mutex_message);
+		// pthread_mutex_unlock(&philo->access->mutex_message);
 		return ;
 	}
+	pthread_mutex_lock(&philo->access->mutex_message);
 	printf(BLU"%lld %d is sleeping\n"RESET, current_time, philo->id);
 	pthread_mutex_unlock(&philo->access->mutex_message);
 	finished_sleeping_time = get_time() + philo->tt_sleep;
